@@ -1,113 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Site Admin · La Casa del Habano UAE</title>
-    <link rel="icon" href="../favicon.ico" sizes="any">
-    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="admin.css?v=3">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Maison Admin · Le Tabac Exclusivo</title>
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css?v=1">
 </head>
 <body>
-
-    <!-- ===== LOGIN ===== -->
-    <div class="login-wrap" id="login-view">
-        <form class="login-card" id="login-form">
-            <p class="brand-mark">LCDH</p>
-            <h1 class="login-title">Site Admin</h1>
-            <p class="login-sub">La Casa del Habano UAE · restricted area</p>
-            <label class="field-label" for="password">Password</label>
-            <input type="password" id="password" autocomplete="current-password" placeholder="Enter admin password" required>
-            <button type="submit" class="btn btn-primary btn-block">Unlock panel</button>
-            <p class="login-error" id="login-error" role="alert"></p>
-        </form>
-    </div>
-
-    <!-- ===== ADMIN PANEL ===== -->
-    <div id="admin-view" class="hidden">
-        <header class="topbar">
-            <div>
-                <p class="topbar-brand">LA CASA DEL HABANO <span>· Site Admin</span></p>
-                <p class="topbar-sub" id="events-count"></p>
-            </div>
-            <div class="topbar-actions">
-                <a class="btn btn-ghost" href="../index.html#events" target="_blank" rel="noopener">View site ↗</a>
-                <button type="button" class="btn btn-ghost" id="export-btn">Copy events-data.js</button>
-                <button type="button" class="btn btn-danger-ghost" id="restore-btn">Restore defaults</button>
-                <button type="button" class="btn btn-ghost" id="logout-btn">Log out</button>
-            </div>
-        </header>
-
-        <nav class="tabs" aria-label="Admin sections">
-            <button type="button" class="tab-btn active" data-panel="events">Events</button>
-            <button type="button" class="tab-btn" data-panel="settings">Site Settings</button>
-        </nav>
-
-        <div id="panel-events">
-        <main class="layout">
-            <!-- FORM -->
-            <section class="card">
-                <h2 class="card-title" id="form-title">Add new event</h2>
-                <form id="event-form">
-                    <label class="field-label" for="f-image">Image URL *</label>
-                    <input type="url" id="f-image" placeholder="https://…/photo.jpg" required>
-                    <div class="preview-box"><img id="image-preview" alt="Preview of event image" class="hidden"></div>
-
-                    <div class="form-row">
-                        <div>
-                            <label class="field-label" for="f-category">Category tag</label>
-                            <input type="text" id="f-category" placeholder="e.g. LIVE AT THE CASA">
-                        </div>
-                        <div>
-                            <label class="field-label" for="f-date">Date · Location line</label>
-                            <input type="text" id="f-date" placeholder="e.g. DUBAI · PRIVATE INVITATION">
-                        </div>
-                    </div>
-
-                    <label class="field-label" for="f-title">Title *</label>
-                    <input type="text" id="f-title" placeholder="e.g. SON CUBANO SESSIONS" required>
-
-                    <label class="field-label" for="f-copy">Description</label>
-                    <textarea id="f-copy" rows="3" placeholder="Short invitation copy shown on the slide"></textarea>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary" id="save-btn">Save event</button>
-                        <button type="button" class="btn btn-ghost hidden" id="cancel-edit-btn">Cancel edit</button>
-                    </div>
-                </form>
-            </section>
-
-            <!-- LIST -->
-            <section class="card">
-                <h2 class="card-title">Current events</h2>
-                <div id="event-list"></div>
-            </section>
-        </main>
-        </div>
-
-        <div id="panel-settings" class="hidden">
-        <main class="layout">
-            <section class="card">
-                <h2 class="card-title">Site Settings</h2>
-                <p class="settings-hint">These settings power the live website and are exported to <code>js/site-settings.js</code> — same workflow as events.</p>
-                <div id="settings-forms"></div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-primary" id="settings-save-btn">Save settings</button>
-                    <button type="button" class="btn btn-ghost" id="settings-export-btn">Copy site-settings.js</button>
-                    <button type="button" class="btn btn-danger-ghost" id="settings-restore-btn">Restore defaults</button>
-                </div>
-            </section>
-        </main>
-        </div>
-    </div>
-
-    <div class="status-toast" id="status-toast" role="status"></div>
-
-    <script src="admin.js"></script>
+<div class="login-wrap" id="login-view">
+<form class="login-card" id="login-form">
+<p class="brand-mark">LTE</p>
+<h1> Maison Admin</h1>
+<p class="login-sub">Le Tabac Exclusivo · restricted</p>
+<label for="password">Password</label>
+<input type="password" id="password" required placeholder="Enter admin password">
+<button type="submit" class="btn btn-gold">Unlock panel</button>
+<p class="login-error" id="login-error" role="alert"></p>
+</form>
+</div>
+<div id="admin-view" hidden>
+<header class="topbar"><div><p class="topbar-brand">LE TABAC EXCLUSIVO · Admin</p><p id="events-count"></p></div>
+<div class="topbar-actions"><a class="btn btn-line" href="../index.html#rituals" target="_blank" rel="noopener">View site</a><button class="btn btn-line" id="export-btn" type="button">Copy rituals-data.js</button><button class="btn btn-line" id="restore-btn" type="button">Restore defaults</button><button class="btn btn-line" id="logout-btn" type="button">Log out</button></div></header>
+<nav class="tabs"><button type="button" class="tab-btn active" data-panel="events">Rituals</button><button type="button" class="tab-btn" data-panel="settings">Settings</button></nav>
+<div id="panel-events"><main class="layout">
+<section class="card"><h2 id="form-title">Add ritual</h2>
+<form id="event-form">
+<label>Image URL<input type="url" id="f-image" required placeholder="https://…"></label>
+<div class="preview-box"><img id="image-preview" alt="preview" hidden></div>
+<div class="form-row"><div><label>Tag<input type="text" id="f-category" placeholder="BLIND FLIGHT NIGHT"></label></div><div><label>Date line<input type="text" id="f-date" placeholder="MONTHLY"></label></div></div>
+<label>Title<input type="text" id="f-title" required></label>
+<label>Description<textarea id="f-copy" rows="3"></textarea></label>
+<div class="form-actions"><button class="btn btn-gold" type="submit" id="save-btn">Save ritual</button><button class="btn btn-line" type="button" id="cancel-edit-btn" hidden>Cancel</button></div>
+</form></section>
+<section class="card"><h2>Current rituals</h2><div id="event-list"></div></section>
+</main></div>
+<div id="panel-settings" hidden><main class="layout"><section class="card"><h2>Site settings</h2><p>Exports to js/site-settings.js</p><div id="settings-forms"></div><div class="form-actions"><button class="btn btn-gold" type="button" id="settings-save-btn">Save settings</button><button class="btn btn-line" type="button" id="settings-export-btn">Copy file</button><button class="btn btn-line" type="button" id="settings-restore-btn">Restore defaults</button></div></section></main></div>
+</div>
+<div class="status-toast" id="status-toast" role="status"></div>
+<script src="admin.js?v=1"></script>
 </body>
 </html>
