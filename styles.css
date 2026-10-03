@@ -661,6 +661,24 @@ select:focus-visible {
     }
 }
 
+.hero-nowrap {
+    white-space: nowrap;
+}
+
+.hero-line-break {
+    display: none;
+}
+
+@media (min-width: 1024px) {
+    .hero-line-break {
+        display: block;
+    }
+
+    .hero-centered .hero-title {
+        max-width: 62rem;
+    }
+}
+
 .hero-description {
     margin-top: 28px;
     max-width: 36rem;
