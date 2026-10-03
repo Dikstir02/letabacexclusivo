@@ -11,10 +11,12 @@
     <link rel="preconnect" href="https://ik.imagekit.io">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="icon" href="favicon.ico" sizes="any">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" href="favicon.ico?v=2" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=2">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+    <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png?v=2">
+    <link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png?v=2">
     <link rel="stylesheet" href="styles.css?v=27">
     <!-- Settings load in <head> so the Coming Soon switch below can read
          them before the body renders (no flash of the real site). -->
@@ -24,7 +26,7 @@
     <!-- ===== AGE GATE (21+) ===== -->
     <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title" aria-hidden="true">
         <div class="age-gate-card">
-            <img src="logo.svg" alt="La Casa del Habano UAE" class="age-gate-logo">
+            <img src="logo.png?v=2" alt="LeTabac Exclusivo" class="age-gate-logo">
             <p class="age-gate-kicker">AGE RESTRICTION</p>
             <h2 class="age-gate-title" id="age-gate-title">ARE YOU OVER 21?</h2>
             <p class="age-gate-copy">This website is intended for adults aged 21 and over only.<br>Are you of legal smoking age in your country of residence?</p>
@@ -85,8 +87,8 @@
         var contact = settings.contact || {};
         var html = '<div id="coming-soon" class="coming-soon" role="dialog" aria-modal="true" aria-labelledby="coming-soon-title">'
             + '<div class="coming-soon-card">'
-            + '<img src="logo.svg" alt="La Casa del Habano UAE" class="coming-soon-logo">'
-            + '<p class="coming-soon-kicker">LA CASA DEL HABANO &middot; UAE</p>'
+            + '<img src="logo.png?v=2" alt="LeTabac Exclusivo" class="coming-soon-logo">'
+            + '<p class="coming-soon-kicker">LETABAC &middot; EXCLUSIVO</p>'
             + '<h1 class="coming-soon-title" id="coming-soon-title">' + esc(cs.headline || 'COMING SOON') + '</h1>'
             + '<span class="coming-soon-rule" aria-hidden="true"></span>'
             + '<p class="coming-soon-message">' + esc(cs.message || '') + '</p>'
@@ -115,7 +117,7 @@
     <header class="site-header" id="siteHeader">
         <nav aria-label="Main navigation" class="nav-container">
             <a href="#home" aria-label="La Casa del Habano UAE home" class="nav-logo">
-                <img src="logo.svg" alt="La Casa del Habano" class="logo-image">
+                <img src="logo.png?v=2" alt="LeTabac Exclusivo" class="logo-image">
             </a>
             <div class="desktop-nav">
                 <a class="nav-link" href="#home">HOME</a>
@@ -481,7 +483,7 @@
     <footer class="footer">
         <div class="container footer-grid">
             <div>
-                <img src="logo.svg" alt="La Casa del Habano UAE" class="footer-logo-image">
+                <img src="logo.png?v=2" alt="LeTabac Exclusivo" class="footer-logo-image">
                 <p class="footer-statement">The home of premium Habanos in the UAE, with a little Havana soul.</p>
             </div>
             <div>
