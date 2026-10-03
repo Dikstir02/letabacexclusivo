@@ -1,28 +1,28 @@
 /* =========================================================
    LA CASA DEL HABANO UAE — Events Admin styles
    (Red-dominant brand palette: Everything is mixed from
-    Habano Red #98012D, with Habano Gold #A7996E + ivory
-    as accents. Tobacco Brown #7B3900 and Habano Black
-    #211E1F remain reserved for print/packaging.)
+    Habano Red #1e0505, with Habano Gold #d8b068 + ivory
+    as accents. Tobacco Brown #1e0505 and Habano Black
+    #1e0505 remain reserved for print/packaging.)
    ========================================================= */
 :root {
     /* --- Core brand colour --- */
-    --brand-red: #98012d;
+    --brand-red: #1e0505;
 
     /* --- Habano Red shades (every surface) --- */
-    --brand-red-deep: #6b0120;
-    --brand-red-dark: #4a0116;
-    --brand-red-darkest: #2e0109;
+    --brand-red-deep: #2a0a08;
+    --brand-red-dark: #1e0505;
+    --brand-red-darkest: #120303;
 
     /* --- Brand accents & tints --- */
-    --brand-gold: #a7996e;
-    --brand-ivory: #fee7c6;
-    --brand-red-tint: #e5bfca;
+    --brand-gold: #d8b068;
+    --brand-ivory: #d8b068;
+    --brand-red-tint: #d8b068;
 
     /* --- Panel aliases --- */
     --cream: var(--brand-ivory);
     --gold: var(--brand-gold);
-    --line: rgba(254, 231, 198, .18);
+    --line: rgba(216, 176, 104, .18);
     --danger: var(--brand-red);
     --danger-tint: var(--brand-red-tint);
 }
@@ -50,10 +50,10 @@ body {
 .login-card {
     width: 100%;
     max-width: 380px;
-    background: rgba(46, 1, 9, .82);
-    border: 1px solid rgba(167, 153, 110, .45);
+    background: rgba(30, 5, 5, .82);
+    border: 1px solid rgba(216, 176, 104, .45);
     padding: 40px 32px;
-    box-shadow: 0 30px 60px rgba(46, 1, 9, .6);
+    box-shadow: 0 30px 60px rgba(30, 5, 5, .6);
 }
 
 .brand-mark {
@@ -100,7 +100,7 @@ input[type="url"],
 input[type="password"],
 textarea {
     width: 100%;
-    background: rgba(46, 1, 9, .55);
+    background: rgba(30, 5, 5, .55);
     border: 1px solid var(--line);
     color: var(--cream);
     font: inherit;
@@ -133,7 +133,7 @@ textarea { resize: vertical; }
 .btn-primary { background: var(--cream); color: var(--brand-red); }
 .btn-ghost { background: none; border-color: var(--line); color: var(--cream); }
 .btn-ghost:hover { border-color: var(--gold); }
-.btn-danger-ghost { background: none; border-color: rgba(229, 191, 202, .55); color: var(--danger-tint); }
+.btn-danger-ghost { background: none; border-color: rgba(216, 176, 104, .55); color: var(--danger-tint); }
 .btn-danger-ghost:hover { border-color: var(--danger); }
 .btn-block { width: 100%; margin-top: 22px; }
 
@@ -174,7 +174,7 @@ textarea { resize: vertical; }
 }
 
 .card {
-    background: rgba(254, 231, 198, .07);
+    background: rgba(216, 176, 104, .07);
     border: 1px solid var(--line);
     padding: 26px;
 }
@@ -225,7 +225,7 @@ textarea { resize: vertical; }
     font-weight: 700;
     letter-spacing: .16em;
     color: var(--gold);
-    border: 1px solid rgba(167, 153, 110, .6);
+    border: 1px solid rgba(216, 176, 104, .6);
     padding: 2px 8px;
     margin-bottom: 6px;
 }
@@ -288,7 +288,7 @@ textarea { resize: vertical; }
 .event-item.dragging {
     opacity: .45;
     outline: 1px dashed var(--gold);
-    background: rgba(46, 1, 9, .5);
+    background: rgba(30, 5, 5, .5);
 }
 
 .grip {
@@ -356,7 +356,7 @@ textarea { resize: vertical; }
 
 .tab-btn.active {
     opacity: 1;
-    background: rgba(254, 231, 198, .1);
+    background: rgba(216, 176, 104, .1);
     border-color: var(--line);
     border-top: 2px solid var(--gold);
 }
@@ -370,8 +370,8 @@ textarea { resize: vertical; }
 }
 
 .settings-hint code {
-    background: rgba(167, 153, 110, .18);
-    border: 1px solid rgba(167, 153, 110, .45);
+    background: rgba(216, 176, 104, .18);
+    border: 1px solid rgba(216, 176, 104, .45);
     padding: 1px 6px;
     font-size: 12px;
 }
@@ -410,8 +410,8 @@ textarea { resize: vertical; }
     margin-top: 4px;
     padding: 10px 12px;
     border: 1px solid var(--line);
-    border-radius: 8px;
-    background: rgba(254, 231, 198, .06);
+    border-radius: 2px;
+    background: rgba(216, 176, 104, .06);
     font-size: 12.5px;
     line-height: 1.6;
 }
@@ -438,8 +438,8 @@ textarea { resize: vertical; }
 .gh-steps li { margin-left: 20px; margin-bottom: 4px; }
 
 .gh-steps code {
-    background: rgba(167, 153, 110, .18);
-    border: 1px solid rgba(167, 153, 110, .45);
+    background: rgba(216, 176, 104, .18);
+    border: 1px solid rgba(216, 176, 104, .45);
     padding: 1px 6px;
     font-size: 12px;
 }
