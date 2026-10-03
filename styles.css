@@ -285,13 +285,25 @@ select:focus-visible {
         padding-right: 40px;
     }
 }
-/* Centered desktop nav (no header logo — logo lives in the hero) */
-.nav-container.nav-centered {
-    justify-content: center;
+/* Split header: logo left, nav links right */
+.nav-container.nav-split {
+    justify-content: space-between;
 }
 
-.nav-container.nav-centered .desktop-nav {
-    justify-content: center;
+.nav-container.nav-split .desktop-nav {
+    justify-content: flex-end;
+    margin-left: auto;
+}
+
+.nav-split .nav-logo {
+    flex-shrink: 0;
+    margin-right: 24px;
+}
+
+.nav-split .logo-image {
+    height: 56px;
+    max-width: 280px;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, .55));
 }
 
 /* Big centered hero logo */
@@ -334,8 +346,17 @@ select:focus-visible {
 }
 
 @media (max-width: 767px) {
-    .nav-container.nav-centered {
+    .nav-container.nav-split {
         justify-content: flex-end;
+    }
+
+    .nav-split .nav-logo {
+        margin-right: auto;
+    }
+
+    .nav-split .logo-image {
+        height: 44px;
+        max-width: 200px;
     }
 
     .hero-content.hero-centered {
