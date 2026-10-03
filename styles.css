@@ -285,6 +285,53 @@ select:focus-visible {
         padding-right: 40px;
     }
 }
+/* Centered desktop nav (no header logo — logo lives in the hero) */
+.nav-container.nav-centered {
+    justify-content: center;
+}
+
+.nav-container.nav-centered .desktop-nav {
+    justify-content: center;
+}
+
+/* Big centered hero logo */
+.hero-content.hero-centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.hero-content.hero-centered .hero-inner,
+.hero-content.hero-centered .hero-title,
+.hero-content.hero-centered .hero-description {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.hero-content.hero-centered .hero-actions {
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-logo-image {
+    display: block;
+    width: min(560px, 82vw);
+    height: auto;
+    margin: 28px auto 0;
+}
+
+@media (max-width: 767px) {
+    .nav-container.nav-centered {
+        justify-content: flex-end;
+    }
+
+    .hero-logo-image {
+        width: min(420px, 86vw);
+    }
+}
+
 
 .nav-logo {
     display: flex;
