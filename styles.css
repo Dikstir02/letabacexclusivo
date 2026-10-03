@@ -300,6 +300,9 @@ select:focus-visible {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding-top: 120px;
+    padding-bottom: 72px;
+    gap: 0;
 }
 
 .hero-content.hero-centered .hero-inner,
@@ -317,9 +320,17 @@ select:focus-visible {
 
 .hero-logo-image {
     display: block;
-    width: min(560px, 82vw);
+    width: min(300px, 64vw);
     height: auto;
-    margin: 28px auto 0;
+    margin: 0 auto 22px;
+}
+
+.hero-content.hero-centered .hero-kicker {
+    margin-bottom: 26px;
+}
+
+.hero-content.hero-centered .hero-inner {
+    margin-top: 0;
 }
 
 @media (max-width: 767px) {
@@ -327,8 +338,18 @@ select:focus-visible {
         justify-content: flex-end;
     }
 
+    .hero-content.hero-centered {
+        padding-top: 104px;
+        padding-bottom: 64px;
+    }
+
     .hero-logo-image {
-        width: min(420px, 86vw);
+        width: min(230px, 68vw);
+        margin-bottom: 18px;
+    }
+
+    .hero-content.hero-centered .hero-kicker {
+        margin-bottom: 22px;
     }
 }
 
