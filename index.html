@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Casa del Habano UAE</title>
+    <meta name="description" content="The home of premium Habanos in the UAE. La Casa del Habano UAE – a taste of Havana, made for the UAE.">
+    <meta name="theme-color" content="#98012d">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://ik.imagekit.io">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="styles.css?v=27">
+    <!-- Settings load in <head> so the Coming Soon switch below can read
+         them before the body renders (no flash of the real site). -->
+    <script src="js/site-settings.js?v=4"></script>
+</head>
+    <body>
+    <!-- ===== AGE GATE (21+) ===== -->
+    <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title" aria-hidden="true">
+        <div class="age-gate-card">
+            <img src="logo.svg" alt="La Casa del Habano UAE" class="age-gate-logo">
+            <p class="age-gate-kicker">AGE RESTRICTION</p>
+            <h2 class="age-gate-title" id="age-gate-title">ARE YOU OVER 21?</h2>
+            <p class="age-gate-copy">This website is intended for adults aged 21 and over only.<br>Are you of legal smoking age in your country of residence?</p>
+            <div class="age-choice-row" role="group" aria-label="Are you over 21?">
+                <button type="button" id="age-yes" class="btn-casa btn-coral age-choice-btn">YES</button>
+                <button type="button" id="age-no" class="btn-casa btn-outline age-choice-btn">NO</button>
+            </div>
+            <p class="age-gate-error" id="age-gate-error" role="alert"></p>
+        </div>
+    </div>
+    <script>
+    /* Shows the age gate synchronously BEFORE the rest of the page renders,
+       so visitors only ever see the gate on their first visit.
+       Verification lives in sessionStorage: it expires once the visitor
+       exits (closes the tab/browser), so every new visit asks again.
+       (Key matches script.js.) */
+    (function () {
+        var verified = false;
+        try {
+            verified = !!sessionStorage.getItem('lcdh_age_verified');
+        } catch (error) { /* storage unavailable */ }
+        if (!verified) {
+            document.getElementById('age-gate').classList.add('visible');
+            document.body.classList.add('age-gate-open');
+        }
+    })();
+    </script>
+
+    <!-- ===== COMING SOON PAGE (switchable in /admin → Site Settings) =====
+         Reads the admin's latest save (localStorage `lcdh_settings_v1`)
+         first so a toggle in the panel previews on reload, then the
+         exported js/site-settings.js (loaded in <head> above), defaulting
+         to OFF. Runs synchronously before the rest of the body renders,
+         so the real site never flashes behind the overlay. -->
+    <script>
+    (function () {
+        var settings = null;
+        try {
+            var raw = localStorage.getItem('lcdh_settings_v1');
+            if (raw) {
+                var saved = JSON.parse(raw);
+                if (saved && saved.settings && saved.settings.comingSoon && typeof saved.settings.comingSoon === 'object') {
+                    settings = saved.settings;
+                }
+            }
+        } catch (error) { /* storage unavailable — fall through */ }
+        if (!settings && window.LCDH_SETTINGS && typeof window.LCDH_SETTINGS === 'object') {
+            settings = window.LCDH_SETTINGS;
+        }
+        var cs = settings && settings.comingSoon;
+        if (!cs || cs.enabled !== true) return;
+
+        function esc(value) {
+            return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+            });
+        }
+        var contact = settings.contact || {};
+        var html = '<div id="coming-soon" class="coming-soon" role="dialog" aria-modal="true" aria-labelledby="coming-soon-title">'
+            + '<div class="coming-soon-card">'
+            + '<img src="logo.svg" alt="La Casa del Habano UAE" class="coming-soon-logo">'
+            + '<p class="coming-soon-kicker">LA CASA DEL HABANO &middot; UAE</p>'
+            + '<h1 class="coming-soon-title" id="coming-soon-title">' + esc(cs.headline || 'COMING SOON') + '</h1>'
+            + '<span class="coming-soon-rule" aria-hidden="true"></span>'
+            + '<p class="coming-soon-message">' + esc(cs.message || '') + '</p>'
+            + '<div class="coming-soon-links">'
+            + (contact.email ? '<a class="coming-soon-link" href="mailto:' + esc(contact.email) + '">Email us</a>' : '')
+            + (contact.whatsapp ? '<a class="coming-soon-link" href="https://wa.me/' + esc(String(contact.whatsapp).replace(/[^0-9]/g, '')) + '" target="_blank" rel="noopener">WhatsApp</a>' : '')
+            + (contact.instagram ? '<a class="coming-soon-link" href="' + esc(contact.instagram) + '" target="_blank" rel="noopener">Instagram</a>' : '')
+            + '</div>'
+            + '<p class="coming-soon-foot">DUBAI &middot; ABU DHABI</p>'
+            + '</div></div>';
+        document.body.classList.add('coming-soon-open');
+        document.body.insertAdjacentHTML('beforeend', html);
+        document.title = 'Coming Soon · La Casa del Habano UAE';
+    })();
+    </script>
+
+    <!-- ===== BACKGROUND AUDIO ===== -->
+    <audio id="bg-audio" preload="auto" loop playsinline>
+        <source src="https://cdn.pixabay.com/download/audio/2026/02/24/audio_c6c3c46f82.mp3?filename=silesfelipe-siles-calendar-august-1-490186.mp3" type="audio/mpeg">
+    </audio>
+    <button id="audio-toggle" aria-label="Unmute background music" title="Toggle background music" style="position:fixed;bottom:24px;left:24px;z-index:1000;background:rgba(74,1,22,0.94);border:2px solid rgba(167,153,110,0.75);color:#a7996e;width:52px;height:52px;border-radius:50%;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);transition:all 0.3s ease;box-shadow:0 4px 12px rgba(46,1,9,0.45);">
+        <span class="audio-icon">🔊</span>
+    </button>
+
+    <!-- ===== HEADER ===== -->
+    <header class="site-header" id="siteHeader">
+        <nav aria-label="Main navigation" class="nav-container">
+            <a href="#home" aria-label="La Casa del Habano UAE home" class="nav-logo">
+                <img src="logo.svg" alt="La Casa del Habano" class="logo-image">
+            </a>
+            <div class="desktop-nav">
+                <a class="nav-link" href="#home">HOME</a>
+                <a class="nav-link" href="#heritage">HERITAGE</a>
+                <a class="nav-link" href="#experience">THE EXPERIENCE</a>
+                <a class="nav-link" href="#about">ABOUT US</a>
+                <a class="btn-casa nav-cta" href="#locations">PLAN YOUR VISIT</a>
+            </div>
+            <button id="menu-button" type="button" aria-label="Open navigation menu" aria-expanded="false" class="menu-button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- ===== MOBILE MENU ===== -->
+    <aside id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation">
+        <nav class="mobile-nav">
+            <a class="display" href="#home">Home</a>
+            <a class="display" href="#heritage">Heritage</a>
+            <a class="display" href="#experience">The Experience</a>
+            <a class="display" href="#about">About Us</a>
+            <a class="display" href="#locations">Locations</a>
+        </nav>
+    </aside>
+
+    <main>
+        <!-- ===== HERO ===== -->
+        <section id="home" class="hero">
+            <img class="hero-bg-img" src="https://ik.imagekit.io/ttdzqyoun/hero_bg?updatedAt=1789847544621" alt="Cigar lounge seating area with a green leather sofa beneath a gallery wall of framed Cuban art under warm lamplight" loading="eager">
+            <div class="hero-overlay" aria-hidden="true"></div>
+            <div class="hero-sun" aria-hidden="true"></div>
+            <div class="hero-content">
+                <p class="stamp hero-kicker">CUBAN HERITAGE · UAE HOSPITALITY</p>
+                <div class="hero-inner">
+                    <p class="hero-logo display">LA CASA DEL HABANO UAE</p>
+                    <h1 class="hero-title display">A TASTE OF HAVANA, MADE FOR THE UAE.</h1>
+                    <p class="hero-description">Discover the craft, colour and unhurried ritual of exceptional Habanos in a house inspired by Cuba's enduring spirit.</p>
+                    <div class="hero-actions">
+                        <a href="#heritage" class="btn-casa btn-coral">DISCOVER OUR HERITAGE</a>
+                        <a href="#locations" class="btn-casa btn-outline">FIND YOUR CASA</a>
+                    </div>
+                </div>
+            </div>
+            <a href="#heritage" class="hero-scroll" aria-label="Scroll to next section">
+                <span class="hero-scroll-line" aria-hidden="true"></span>
+                <span class="hero-scroll-text">FOLLOW THE RHYTHM</span>
+    </a>
+        </section>
+<!-- ===== TILE RULE ===== -->
+        <div class="tile-rule" aria-hidden="true"></div>
+
+        <!-- ===== HERITAGE ===== -->
+        <section id="heritage" class="section paper-grain">
+            <div class="container heritage-grid">
+                <div class="reveal heritage-media">
+                    <div class="heritage-frame" aria-hidden="true"></div>
+                    <img src="https://ik.imagekit.io/ttdzqyoun/Golden-Hour%20Cuban%20Cigar%20Craftsmanship.png" alt="Golden-hour Cuban cigar craftsmanship — hands rolling Habanos" loading="lazy">
+                </div>
+                <div class="reveal">
+                    <p class="eyebrow">FROM LEAF TO LEGACY</p>
+                    <h2 class="section-title">CUBAN SOUL. TRUE HABANO CRAFT.</h2>
+                    <p class="section-copy">For over five centuries, the Habano has carried the story of Cuba in every leaf. From the Vuelta Abajo soils where the island's finest tobacco is born to the humidor-lined lounges of our Casas in Dubai and Abu Dhabi, that legacy is lived here.</p>
+                    <p class="section-copy">Ours is a house built around that craft — hand-rolled Habanos, patient ageing, and the unhurried ritual of good company. To know La Casa del Habano is to know the Habano itself.</p>
+                    <button type="button" id="heritage-story" class="btn-casa btn-blue" data-heritage role="button" aria-haspopup="dialog" aria-expanded="false">OUR STORY →</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== HERITAGE STORY MODAL (mirrors the .exp-modal look & behaviour) ===== -->
+        <div id="heritage-modal" class="exp-modal" role="dialog" aria-modal="true" aria-labelledby="heritage-modal-title" aria-hidden="true">
+            <div class="exp-modal-backdrop" data-heritage-close></div>
+            <div class="exp-modal-card" role="document">
+                <button type="button" class="exp-modal-close" data-heritage-close aria-label="Close details">&times;</button>
+                <div class="exp-modal-img"><img id="heritage-modal-img" alt=""></div>
+                <div class="exp-modal-body">
+                    <h2 id="heritage-modal-title" class="exp-modal-title display">The Habano</h2>
+                    <div class="story-content">
+                        <h2 class="story-title">The Legacy of the Habano</h2>
+                        <h3>A Heritage Rooted in Cuba</h3>
+                        <p>Long before the world came to know the Cuban cigar, the Taino people of Cuba were already cultivating and enjoying tobacco. In 1492, Christopher Columbus and his expedition encountered this ancient tradition for the first time, witnessing the burning and rolling of tobacco leaves known to the indigenous people as <em>Cohiba</em>.</p>
+                        <p>What began as a discovery would become a legacy that travelled across continents. Yet, despite tobacco's journey around the world, the true character of the Cuban cigar remains inseparable from the land where it was born.</p>
+                        <h3>Where Nature Meets Craftsmanship</h3>
+                        <p>The unmistakable character of a Habano begins with the extraordinary conditions found in Cuba. Its fertile soil, distinctive climate, native black tobacco seed varieties and generations of agricultural expertise come together to create a tobacco unlike any other.</p>
+                        <p>Beyond these natural elements lies a tradition shaped by patience and dedication. Cuban tobacco growers devote exceptional care to every stage of cultivation, from planting the first seeds to harvesting and carefully ageing the leaves. Each leaf follows its own journey, guided by the experience of those who understand when it has reached the quality required for a Habano.</p>
+                        <p>It is this relationship between nature, time and human craftsmanship that gives Cuban tobacco its enduring distinction.</p>
+                        <h3>The Meaning Behind the Name</h3>
+                        <p>Not every cigar made in Cuba is a Habano. The name represents a protected heritage, reserved for a selection of distinguished Cuban cigar brands that meet specific standards of origin, production and quality.</p>
+                        <p>Recognised through the Protected Denomination of Origin, or <em>Denominación de Origen Protegida</em> (D.O.P.), Habanos are produced using tobacco grown in designated Cuban regions, each with its own protected geographical identity.</p>
+                        <p>This distinction preserves the connection between the cigar and the land, ensuring that the name Habano represents more than a place of manufacture. It represents a tradition with a defined origin and a carefully guarded identity.</p>
+                        <h3>A Tradition Made Entirely by Hand</h3>
+                        <p>For more than two centuries, the art of making Habanos has been guided by techniques developed in Havana and passed from one generation of cigar makers to the next.</p>
+                        <p>Every Habano is crafted <em>Totalmente a Mano</em> — entirely by hand. From the cultivation of tobacco to the final presentation of the cigar in its box, more than 500 manual tasks contribute to its creation.</p>
+                        <p>The process demands precision at every stage. Experienced hands select, prepare, roll and finish the tobacco, while each cigar undergoes rigorous quality controls established by the Regulatory Council for the Protected Denomination of Origin Habanos.</p>
+                        <p>Only those that satisfy these exacting requirements may carry the distinguished name.</p>
+                        <h3>A Heritage That Endures</h3>
+                        <p>The story of the Habano is one of continuity: a Cuban tradition shaped by nature, perfected through generations of knowledge and preserved through uncompromising craftsmanship.</p>
+                        <p>More than five centuries after tobacco first captured the attention of the outside world in Cuba, the Habano remains a testament to the extraordinary relationship between its origins, its people and the art of making a truly distinctive cigar.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== EXPERIENCE ===== -->
+        <section id="experience" class="section section-blue">
+            <div class="container">
+                <div class="reveal section-head">
+                    <p class="eyebrow eyebrow-gold">THE CASA EXPERIENCE</p>
+                    <h2 class="section-title section-title-cream">A LITTLE HAVANA IN EVERY DETAIL.</h2>
+                    <p class="section-sub cream">A considered world of flavour, knowledge and unmistakable Cuban character.</p>
+                </div>
+                <div class="experience-grid">
+                    <article class="experience-card reveal" data-experience="casa-lounge" tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false">
+                        <div class="experience-img"><img src="https://ik.imagekit.io/ttdzqyoun/New%20Folder/lounge.jpg" width="600" height="400" decoding="async" alt="Guests relaxing in the Casa cigar lounge" loading="lazy"></div>
+                        <div class="experience-body">
+                            <p class="experience-number display">01</p>
+                            <h3 class="experience-title display">CASA LOUNGE HOSPITALITY</h3>
+                            <p class="experience-copy">Plush armchairs, warm hospitality and an unhurried Cuban welcome in every Casa.</p>
+                            <span class="experience-more" aria-hidden="true">Discover more →</span>
+                        </div>
+                    </article>
+                    <article class="experience-card reveal" data-experience="premium-cigars" tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false">
+                        <div class="experience-img"><img src="https://ik.imagekit.io/ttdzqyoun/New%20Folder/premium%20cigars.png" width="600" height="400" decoding="async" alt="Premium hand-rolled Habanos resting in a cedar box" loading="lazy"></div>
+                        <div class="experience-body">
+                            <p class="experience-number display">02</p>
+                            <h3 class="experience-title display">THE PREMIUM HABANO</h3>
+                            <p class="experience-copy">Cohiba to Montecristo — Cuba's great houses, kept in flawless condition.</p>
+                            <span class="experience-more" aria-hidden="true">Discover more →</span>
+                        </div>
+                    </article>
+                    <article class="experience-card reveal" data-experience="cigar-accessories" tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false">
+                        <div class="experience-img"><img src="https://ik.imagekit.io/ttdzqyoun/New%20Folder/accessories.jpg" width="600" height="400" decoding="async" alt="Cigars beside a polished lighter — part of the Casa accessories collection" loading="lazy"></div>
+                        <div class="experience-body">
+                            <p class="experience-number display">03</p>
+                            <h3 class="experience-title display">THE ACCESSORIES ATELIER</h3>
+                            <p class="experience-copy">Cutters, lighters, humidors and cases — everything the ritual deserves.</p>
+                            <span class="experience-more" aria-hidden="true">Discover more →</span>
+                        </div>
+                    </article>
+                    <article class="experience-card reveal" data-experience="torcedor-events" tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false">
+                        <div class="experience-img"><img src="https://ik.imagekit.io/ttdzqyoun/New%20Folder/torcedor.png" width="600" height="400" decoding="async" alt="Master torcedor hand-rolling cigars at a private Casa event" loading="lazy"></div>
+                        <div class="experience-body">
+                            <p class="experience-number display">04</p>
+                            <h3 class="experience-title display">MASTER TORCEDOR EVENTS</h3>
+                            <p class="experience-copy">Live hand-rolling, guided tastings and bespoke gatherings shaped around your occasion.</p>
+                            <span class="experience-more" aria-hidden="true">Discover more →</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+<!-- ===== EXPERIENCE DETAIL MODAL ===== -->
+        <div id="experience-modal" class="exp-modal" role="dialog" aria-modal="true" aria-labelledby="exp-modal-title" aria-hidden="true">
+            <div class="exp-modal-backdrop" data-exp-close></div>
+            <div class="exp-modal-card" role="document">
+                <button type="button" class="exp-modal-close" data-exp-close aria-label="Close details">&times;</button>
+                <div class="exp-modal-img"><img id="exp-modal-img" alt=""></div>
+                <div class="exp-modal-body">
+                    <p class="exp-modal-number display" id="exp-modal-number">01</p>
+                    <h3 class="exp-modal-title display" id="exp-modal-title"></h3>
+                    <p class="exp-modal-tagline" id="exp-modal-tagline"></p>
+                    <div class="exp-modal-text" id="exp-modal-text"></div>
+                </div>
+            </div>
+        </div>
+<!-- ===== EVENTS ===== -->
+        <section id="events" class="section section-red">
+            <div class="container">
+                <div class="events-header">
+                    <div class="reveal">
+                        <p class="eyebrow eyebrow-gold">NIGHTS AT THE CASA</p>
+                        <h2 class="section-title section-title-cream">RHYTHM, RITUAL &amp; REMEMBRANCE.</h2>
+                        <p class="section-sub cream">Gatherings shaped by craft, music and the warm pulse of Havana.</p>
+                    </div>
+                    <div class="events-arrows" aria-hidden="true">
+                        <button id="prev-event" type="button" aria-label="Previous event">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                        </button>
+                        <button id="next-event" type="button" aria-label="Next event">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="event-carousel" class="event-carousel">
+                    <div id="event-track" class="event-track">
+                        <article class="event-slide active">
+                            <img src="https://images.pexels.com/photos/33731258/pexels-photo-33731258.jpeg" alt="Live music night at the Casa" loading="lazy">
+                            <div class="event-content">
+                                <p class="event-category">LIVE AT THE CASA</p>
+                                <h3 class="event-title display">SON CUBANO SESSIONS</h3>
+                                <p class="event-copy">An intimate night of cigar culture, live guitar and easy conversation under warm lights.</p>
+                                <p class="event-date">DUBAI · PRIVATE INVITATION</p>
+                                <a href="#locations" class="event-link">FIND YOUR CASA →</a>
+                            </div>
+                        </article>
+                        <article class="event-slide">
+                            <img src="https://ik.imagekit.io/ttdzqyoun/New%20Folder/lounge.jpg" alt="Guests relaxing in the Casa cigar lounge" loading="lazy">
+                            <div class="event-content">
+                                <p class="event-category">PAIRING EVENING</p>
+                                <h3 class="event-title display">THE RITUAL OF THE HABANO</h3>
+                                <p class="event-copy">A slow exploration of flavour, aroma and the timeless ceremony of a fine Habano.</p>
+                                <p class="event-date">ABU DHABI · MEMBERS' NIGHT</p>
+                                <a href="#locations" class="event-link">FIND YOUR CASA →</a>
+                            </div>
+                        </article>
+                        <article class="event-slide">
+                            <img src="https://images.pexels.com/photos/15161546/pexels-photo-15161546.jpeg" alt="Golden hour gathering at the Casa" loading="lazy">
+                            <div class="event-content">
+                                <p class="event-category">THE CASA TABLE</p>
+                                <h3 class="event-title display">GOLDEN HOUR GATHERING</h3>
+                                <p class="event-copy">A relaxed evening of shared tables, live music and old Havana spirit.</p>
+                                <p class="event-date">UAE · BY INVITATION</p>
+                                <a href="#locations" class="event-link">FIND YOUR CASA →</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div id="event-dots" class="event-dots" role="tablist" aria-label="Event slides"></div>
+            </div>
+        </section>
+<!-- ===== BRANDS ===== -->
+        <section id="brands" class="section paper-grain">
+            <div class="container">
+                <p class="eyebrow">CUBA'S ICONIC HOUSES</p>
+                <h2 class="section-title">THE WORLD OF HABANOS.</h2>
+                <p class="section-copy">Discover the legendary names behind Cuba's most celebrated cigars.</p>
+                <div id="brands-marquee" class="brands-marquee" aria-label="Featured Habanos brands">
+                    <div class="brands-track">
+                        <div class="brands-set">
+                            <img src="brands/cohiba.png" alt="Cohiba" class="brand-logo" loading="lazy">
+                            <img src="brands/montecristo.png" alt="Montecristo" class="brand-logo" loading="lazy">
+                            <img src="brands/romeo-julieta.png" alt="Romeo y Julieta" class="brand-logo" loading="lazy">
+                            <img src="brands/partagas.png" alt="Partagás" class="brand-logo" loading="lazy">
+                            <img src="brands/h_upmann.png" alt="H. Upmann" class="brand-logo" loading="lazy">
+                            <img src="brands/hoyo_de_monterrey.png" alt="Hoyo de Monterrey" class="brand-logo" loading="lazy">
+                            <img src="brands/trinidad.png" alt="Trinidad" class="brand-logo" loading="lazy">
+                            <img src="brands/san-cristobal-habana.png" alt="San Cristóbal de la Habana" class="brand-logo" loading="lazy">
+                            <img src="brands/bolivar.png" alt="Bolívar" class="brand-logo" loading="lazy">
+                            <img src="brands/punch.png" alt="Punch" class="brand-logo" loading="lazy">
+                            <img src="brands/fonseca.png" alt="Fonseca" class="brand-logo" loading="lazy">
+                            <img src="brands/diplomaticos.png" alt="Diplomáticos" class="brand-logo" loading="lazy">
+                            <img src="brands/ramon_allones.png" alt="Ramón Allones" class="brand-logo" loading="lazy">
+                            <img src="brands/por_larranaga.png" alt="Por Larrañaga" class="brand-logo" loading="lazy">
+                            <img src="brands/sant_luis_rey.png" alt="San Luis Rey" class="brand-logo" loading="lazy">
+                            <img src="brands/vegas-robaina.png" alt="Vegas Robaina" class="brand-logo" loading="lazy">
+                            <img src="brands/vegueros.png" alt="Vegueros" class="brand-logo" loading="lazy">
+                            <img src="brands/juan_lopez.png" alt="Juan López" class="brand-logo" loading="lazy">
+                            <img src="brands/flor-rafael-gonzalez.png" alt="Flor de Rafael González" class="brand-logo" loading="lazy">
+                            <img src="brands/flor-cano.png" alt="Flor de Caño" class="brand-logo" loading="lazy">
+                            <img src="brands/qual_d_orsay.png" alt="Quai d'Orsay" class="brand-logo" loading="lazy">
+                            <img src="brands/lgc.png" alt="La Gloria Cubana" class="brand-logo" loading="lazy">
+                            <img src="brands/es_rey_del_mundo.png" alt="El Rey del Mundo" class="brand-logo" loading="lazy">
+                            <img src="brands/sancho_panza.png" alt="Sancho Panza" class="brand-logo" loading="lazy">
+                            <img src="brands/hierro-Cuaba-1.png" alt="Cuaba" class="brand-logo" loading="lazy">
+                            <img src="brands/JoseLpiedra-1.png" alt="José L. Piedra" class="brand-logo" loading="lazy">
+                        </div>
+                        <div class="brands-set" aria-hidden="true">
+                            <img src="brands/cohiba.png" alt="Cohiba" class="brand-logo" loading="lazy">
+                            <img src="brands/montecristo.png" alt="Montecristo" class="brand-logo" loading="lazy">
+                            <img src="brands/romeo-julieta.png" alt="Romeo y Julieta" class="brand-logo" loading="lazy">
+                            <img src="brands/partagas.png" alt="Partagás" class="brand-logo" loading="lazy">
+                            <img src="brands/h_upmann.png" alt="H. Upmann" class="brand-logo" loading="lazy">
+                            <img src="brands/hoyo_de_monterrey.png" alt="Hoyo de Monterrey" class="brand-logo" loading="lazy">
+                            <img src="brands/trinidad.png" alt="Trinidad" class="brand-logo" loading="lazy">
+                            <img src="brands/san-cristobal-habana.png" alt="San Cristóbal de la Habana" class="brand-logo" loading="lazy">
+                            <img src="brands/bolivar.png" alt="Bolívar" class="brand-logo" loading="lazy">
+                            <img src="brands/punch.png" alt="Punch" class="brand-logo" loading="lazy">
+                            <img src="brands/fonseca.png" alt="Fonseca" class="brand-logo" loading="lazy">
+                            <img src="brands/diplomaticos.png" alt="Diplomáticos" class="brand-logo" loading="lazy">
+                            <img src="brands/ramon_allones.png" alt="Ramón Allones" class="brand-logo" loading="lazy">
+                            <img src="brands/por_larranaga.png" alt="Por Larrañaga" class="brand-logo" loading="lazy">
+                            <img src="brands/sant_luis_rey.png" alt="San Luis Rey" class="brand-logo" loading="lazy">
+                            <img src="brands/vegas-robaina.png" alt="Vegas Robaina" class="brand-logo" loading="lazy">
+                            <img src="brands/vegueros.png" alt="Vegueros" class="brand-logo" loading="lazy">
+                            <img src="brands/juan_lopez.png" alt="Juan López" class="brand-logo" loading="lazy">
+                            <img src="brands/flor-rafael-gonzalez.png" alt="Flor de Rafael González" class="brand-logo" loading="lazy">
+                            <img src="brands/flor-cano.png" alt="Flor de Caño" class="brand-logo" loading="lazy">
+                            <img src="brands/qual_d_orsay.png" alt="Quai d'Orsay" class="brand-logo" loading="lazy">
+                            <img src="brands/lgc.png" alt="La Gloria Cubana" class="brand-logo" loading="lazy">
+                            <img src="brands/es_rey_del_mundo.png" alt="El Rey del Mundo" class="brand-logo" loading="lazy">
+                            <img src="brands/sancho_panza.png" alt="Sancho Panza" class="brand-logo" loading="lazy">
+                            <img src="brands/hierro-Cuaba-1.png" alt="Cuaba" class="brand-logo" loading="lazy">
+                            <img src="brands/JoseLpiedra-1.png" alt="José L. Piedra" class="brand-logo" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+<!-- ===== LOCATIONS ===== -->
+        <section id="locations" class="section section-leaf">
+            <div class="container">
+                <p class="eyebrow eyebrow-gold">THREE CASAS, ONE SPIRIT</p>
+                <h2 class="section-title section-title-cream">FIND YOUR CASA.</h2>
+                <p class="section-sub cream">Your closest invitation to an exceptional Habano experience.</p>
+                <div class="locations-layout">
+                    <div id="location-links" class="location-links reveal" role="group" aria-label="Choose a Casa location to see it on the map"></div>
+                    <div class="map-wrap reveal">
+                        <div id="locations-map" class="locations-map" role="region" aria-label="Map of La Casa del Habano locations"></div>
+                    </div>
+                </div>
+                <div id="locations-grid" class="locations-grid"></div>
+            </div>
+        </section>
+<!-- ===== ABOUT US ===== -->
+        <section id="about" class="section section-navy">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="reveal">
+                        <p class="eyebrow eyebrow-gold">OUR STORY</p>
+                        <h2 class="section-title section-title-cream">A CUBAN TRADITION, ROOTED IN THE UAE.</h2>
+                        <p class="section-copy cream">For decades, the UAE has gathered the world's cultures — and among the traditions that found a lasting home here is the Habano. Our story grows from the passion of Baqer Mohebi Enterprises, whose love of Cuban cigars brought the world of premium Habanos closer to the region.</p>
+                        <p class="section-copy cream">The first La Casa del Habano opened in Dubai in 1998, evolving with the city before reaching Jumeirah Beach Residence in 2008 and City Walk in 2018 — with its private lockers and Habanos Terraza — then on to Abu Dhabi Mall and Dubai Duty Free.</p>
+                        <p class="section-copy cream">Yet the Casa has always been about more than cigars: the people, the craftsmanship, and the ritual behind every Habano. A Habano is more than a cigar. It is an experience with Cuba.</p>
+                        <p class="about-sign display">La Casa es su casa.</p>
+                        <div class="about-actions">
+                            <a href="#experience" class="btn-casa btn-coral">EXPLORE THE EXPERIENCE</a>
+                            <a href="#locations" class="btn-casa btn-outline-light">FIND YOUR CASA</a>
+                        </div>
+                    </div>
+                    <div class="reveal about-media">
+                        <div class="about-frame" aria-hidden="true"></div>
+                        <img class="about-img-main" src="https://ik.imagekit.io/ttdzqyoun/about_us_img.png?updatedAt=1789859591076" alt="Inside La Casa del Habano UAE lounge" loading="lazy">
+                        <div class="about-badge">
+                            <p class="about-badge-kicker">HAVANA · DUBAI · ABU DHABI</p>
+                            <p class="about-badge-title display">Three Casas, one spirit.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-pillars">
+                    <article class="about-card reveal">
+                        <p class="about-number display">01</p>
+                        <h3 class="about-card-title">Authenticity, guaranteed</h3>
+                        <p class="about-card-copy">An official La Casa del Habano franchise. Every box sealed, every band genuine, every humidor kept at ritual-perfect conditions.</p>
+                    </article>
+                    <article class="about-card reveal">
+                        <p class="about-number display">02</p>
+                        <h3 class="about-card-title">A place to belong</h3>
+                        <p class="about-card-copy">From first-timers to lifelong aficionados — our team guides, pairs and welcomes you like family, never like a transaction.</p>
+                    </article>
+                    <article class="about-card reveal">
+                        <p class="about-number display">03</p>
+                        <h3 class="about-card-title">Craft &amp; ritual</h3>
+                        <p class="about-card-copy">Cutting, lighting, pairing, sharing. We keep Cuba's slow art alive in the heart of the UAE, one evening at a time.</p>
+                    </article>
+                </div>
+                <div class="about-stats reveal">
+                    <div class="about-stat">
+                        <p class="about-stat-value display">3</p>
+                        <p class="about-stat-label">CASAS ACROSS THE UAE</p>
+                    </div>
+                    <div class="about-stat">
+                        <p class="about-stat-value display">25+</p>
+                        <p class="about-stat-label">CUBAN MARQUES IN OUR HUMIDORS</p>
+                    </div>
+                    <div class="about-stat">
+                        <p class="about-stat-value display">100%</p>
+                        <p class="about-stat-label">GENUINE HABANOS, ALWAYS</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+<!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div>
+                <img src="logo.svg" alt="La Casa del Habano UAE" class="footer-logo-image">
+                <p class="footer-statement">The home of premium Habanos in the UAE, with a little Havana soul.</p>
+            </div>
+            <div>
+                <p class="footer-heading">NAVIGATION</p>
+                <nav class="footer-nav">
+                    <a href="#home" class="footer-link">Home</a>
+                    <a href="#about" class="footer-link">About Us</a>
+                    <a href="#experience" class="footer-link">The Experience</a>
+                    <a href="#events" class="footer-link">Casa Events</a>
+                    <a href="#locations" class="footer-link">Our Locations</a>
+                </nav>
+            </div>
+            <div>
+                <p class="footer-heading">LOCATIONS</p>
+                <nav id="footer-locations" class="footer-locations" aria-label="Our locations">
+                    <a class="footer-link footer-location-link" href="#locations" data-location="City Walk — Dubai">City Walk</a>
+                    <a class="footer-link footer-location-link" href="#locations" data-location="JBR — Dubai">JBR</a>
+                    <a class="footer-link footer-location-link" href="#locations" data-location="Abu Dhabi Mall — Abu Dhabi">Abu Dhabi Mall</a>
+                </nav>
+            </div>
+            <div>
+                <p class="footer-heading">CONTACT</p>
+                <nav class="footer-nav" aria-label="Contact">
+                    <a id="footer-email" href="mailto:cdh.jbr@baqermohebi.com" class="footer-link">cdh.jbr@baqermohebi.com</a>
+                    <a id="footer-instagram" href="https://instagram.com/lacasadelhabano_uae" target="_blank" rel="noopener noreferrer" class="footer-link">Follow us on Instagram — @lacasadelhabano_uae</a>
+                    <a id="footer-whatsapp" href="https://wa.me/9715066008888" target="_blank" rel="noopener noreferrer" class="footer-link" role="button" data-open-chat="true" aria-haspopup="dialog" aria-controls="whatsapp-chatbot" aria-expanded="false">Chat on WhatsApp</a>
+                </nav>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 La Casa del Habano UAE. All Rights Reserved.</span>
+            <!-- Developer signature: revealed only when "devdetshow" is in the URL -->
+            <span id="dev-signature" class="dev-signature" hidden>This site is developed and managed by Dexter John Modesto</span>
+        </div>
+    </footer>
+
+    <!-- ===== WHATSAPP CHATBOT POPUP ===== -->
+    <div id="whatsapp-chatbot" class="whatsapp-chatbot" role="dialog" aria-labelledby="chatbot-title" aria-hidden="true">
+        <div class="chatbot-header">
+            <div class="chatbot-avatar">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+            </div>
+            <div class="chatbot-header-info">
+                <h3 id="chatbot-title">La Casa del Habano</h3>
+                <p class="chatbot-subtitle"><span class="chatbot-status-dot"></span>Typically replies within an hour</p>
+            </div>
+            <button id="chatbot-close" type="button" aria-label="Close chat">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <!-- Shown only when the chat was opened from a specific Casa's
+             "Contact Store" button. Cancelling drops the store target and
+             routes the message back to the main (default) WhatsApp number. -->
+        <div id="chatbot-store-bar" class="chatbot-store-bar" hidden>
+            <p class="chatbot-store-bar-text">Chatting with <strong id="chatbot-store-name">this Casa</strong> — messages go to this store only.</p>
+            <button id="chatbot-store-cancel" type="button" class="chatbot-store-cancel">Cancel</button>
+        </div>
+        <div class="chatbot-messages">
+            <div class="message message-bot">Hello! 👋 Welcome to La Casa del Habano UAE.&#10;Type your message below and we'll continue the chat on WhatsApp.</div>
+        </div>
+        <form id="chatbot-form" class="chatbot-input-area">
+            <textarea id="chatbot-input" placeholder="Type your message…" rows="1" maxlength="1000" aria-label="Type your message"></textarea>
+            <button id="chatbot-send" type="submit" aria-label="Send message">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+        </form>
+    </div>
+
+
+    <!-- ===== FLOATING WHATSAPP ===== -->
+    <a id="whatsapp-widget" href="https://wa.me/971542137706" target="_blank" rel="noopener noreferrer" aria-label="Chat with La Casa del Habano UAE on WhatsApp" aria-haspopup="dialog" aria-controls="whatsapp-chatbot" aria-expanded="false" class="whatsapp-float">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/events-data.js?v=2"></script>
+    <script src="script.js?v=27"></script>
+    <script src="audio.js?v=6"></script>
+</body>
+</html>
+
+
