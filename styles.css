@@ -314,6 +314,8 @@ select:focus-visible {
     display: block;
     height: 44px;
     width: auto;
+    max-width: 220px;
+    object-fit: contain;
 }
 
 .desktop-nav {
@@ -1902,6 +1904,8 @@ button.loc-inline-btn {
     display: block;
     height: 40px;
     width: auto;
+    max-width: 220px;
+    object-fit: contain;
 }
 
 .footer-statement {
@@ -2443,6 +2447,8 @@ body.age-gate-open > *:not(#age-gate):not(#coming-soon) { visibility: hidden; }
     display: block;
     height: 44px;
     width: auto;
+    max-width: 240px;
+    object-fit: contain;
     margin: 0 auto 24px;
 }
 
@@ -2576,6 +2582,8 @@ body.coming-soon-open .whatsapp-chatbot { display: none !important; }
     display: block;
     height: 56px;
     width: auto;
+    max-width: 260px;
+    object-fit: contain;
     margin: 0 auto 26px;
 }
 
